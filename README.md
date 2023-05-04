@@ -7,7 +7,7 @@
 
 <div align="center">
 
-[Download APK](https://github.com/rickicode/NETQ-APK/releases/download/v1.0.5/netq-v1.0.5.apk)
+[Download APK](https://github.com/rickicode/NETQ-APK/releases/latest)
 
 </div>
 
