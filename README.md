@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://netq.me/" rel="noopener">
- <img width=200px height=200px src="https://res.cloudinary.com/hijitoko/image/upload/v1692088807/netq/images/netq-logo.png" alt="NETQ.ME"></a>
+ <img width=200px height=200px src="https://netq.me/favicon/android-chrome-512x512.png" alt="NETQ.ME"></a>
 </p>
 
 <h3 align="center">NETQ.ME APK</h3>
