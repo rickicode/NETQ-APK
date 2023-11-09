@@ -25,4 +25,4 @@
 - Hat tip to anyone whose code was used
 - Inspiration
 - References
-- <a href="https://netq.me/premium" rel="dofollow">NETQ.ME - FREE TUNNELING VPN</a>
+- [NETQ.ME - FREE TUNNELING VPN](https://netq.me)
