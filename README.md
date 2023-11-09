@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://netq.me/premium" rel="noopener">
+  <a href="https://netq.me/premium">
  <img width=200px height=200px src="https://res.cloudinary.com/hijitoko/image/upload/v1691818085/netq/favicon/android-chrome-512x512.png" alt="NETQ.ME"></a>
 </p>
 
@@ -25,4 +25,4 @@
 - Hat tip to anyone whose code was used
 - Inspiration
 - References
-- [NETQ.ME - FREE TUNNELING VPN](https://netq.me/)
+- <a href="https://netq.me/premium">NETQ.ME - FREE TUNNELING VPN</a>
