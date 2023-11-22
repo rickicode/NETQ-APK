@@ -1,0 +1,131 @@
+{
+    "log": {
+        "disabled": false,
+        "level": "info",
+        "output": "/var/log/netq/access-vless.log",
+        "timestamp": false
+    },
+    "experimental": {
+        "v2ray_api": {
+            "listen": "127.0.0.1:10082",
+            "stats": {
+                "enabled": true,
+                "inbounds": [
+                    "VLESS"
+                ],
+                "outbounds": [
+                    "direct",
+                    "freedom",
+                    "blackhole"
+                ],
+                "users": []
+            }
+        }
+    },
+    "inbounds": [
+        {
+            "type": "vless",
+            "tag": "VLESS",
+            "tcp_fast_open": true,
+            "proxy_protocol": true,
+            "proxy_protocol_accept_no_header": true,
+            "sniff": true,
+            "sniff_override_destination": true,
+            "domain_strategy": "prefer_ipv4",
+            "listen": "127.0.0.1",
+            "listen_port": 20002,
+            "users": [],
+            "transport": {
+                "type": "ws",
+                "path": "/tunnelvless",
+                "headers": {},
+                "max_early_data": 2048,
+                "early_data_header_name": "Sec-WebSocket-Protocol"
+            }
+        },
+        {
+            "type": "vless",
+            "tag": "VLESS",
+            "tcp_fast_open": true,
+            "sniff": true,
+            "sniff_override_destination": true,
+            "domain_strategy": "prefer_ipv4",
+            "listen": "127.0.0.1",
+            "listen_port": 20012,
+            "users": [],
+            "transport": {
+                "type": "grpc",
+                "service_name": "tunnelvless-grpc",
+				"idle_timeout": "15s",
+				"ping_timeout": "15s"
+            }
+        }
+    ],
+    "outbounds": [
+        {
+            "tag": "freedom",
+            "type": "direct"
+        },
+        {
+            "tag": "direct",
+            "type": "direct"
+        },
+        {
+            "tag": "WARP",
+            "type": "direct",
+            "bind_interface": "warp"
+        },
+        {
+            "type": "block",
+            "tag": "blackhole"
+        },
+        {
+            "tag": "forbidden_sites",
+            "type": "block"
+        },
+        {
+            "tag": "DNS-Internal",
+            "type": "dns"
+        }
+    ],
+    "route": {
+        "geoip": {
+            "path": "geoip.db",
+            "download_url": "https://github.com/SagerNet/sing-geoip/releases/latest/download/geoip.db",
+            "download_detour": "direct"
+        },
+        "geosite": {
+            "path": "geosite.db",
+            "download_url": "https://github.com/hiddify/sing-geosite/releases/latest/download/geosite.db",
+            "download_detour": "direct"
+        },
+        "final": "direct",
+        "rules": [
+            {
+                "outbound": "direct",
+                "port": [
+                    53
+                ]
+            },
+            {
+                "protocol": "quic",
+                "port": [
+                    443
+                ],
+                "outbound": "blackhole"
+            },
+            {
+                "outbound": "blackhole",
+                "geoip": [
+                    "private"
+                ]
+            },
+            {
+                "outbound": "blackhole",
+                "protocol": [
+                    "bittorrent"
+                ]
+            }
+        ]
+    }
+}
