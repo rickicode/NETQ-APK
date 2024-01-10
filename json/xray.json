@@ -91,12 +91,11 @@
                 "enabled": true
             },
             "streamSettings": {
-                "grpcSettings": {
-                    "level": 0,
-                    "serviceName": "tunnelvless-grpc"
-                },
                 "network": "grpc",
-                "security": "none"
+                "security": "none",
+                "grpcSettings": {
+                    "serviceName": "tunnelvless-grpc"
+                }
             },
             "tag": "VLESS"
         }
