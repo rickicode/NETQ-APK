@@ -1,51 +1,13 @@
 {
-    "api": {
-        "services": [
-            "HandlerService",
-            "LoggerService",
-            "StatsService"
-        ],
-        "tag": "api"
-    },
-    "dns": {
-        "hosts": {
-            "dns.alidns.com": "223.5.5.5",
-            "dns.google": "8.8.8.8",
-            "dns.pub": "119.29.29.29"
-        },
-        "servers": [
-            {
-                "address": "https://1.1.1.1/dns-query",
-                "domains": [
-                    "geosite:geolocation-!cn"
-                ],
-                "expectIPs": [
-                    "geoip:!cn"
-                ]
-            },
-            "8.8.8.8",
-            {
-                "address": "114.114.114.114",
-                "domains": [
-                    "geosite:cn",
-                    "geosite:category-games@cn"
-                ],
-                "expectIPs": [
-                    "geoip:cn"
-                ],
-                "port": 53,
-                "skipFallback": true
-            },
-            {
-                "address": "localhost",
-                "skipFallback": true
-            }
-        ]
+    "log": {
+        "access": "/var/log/netq/access.log",
+        "error": "/var/log/netq/error.log",
+        "loglevel": "info"
     },
     "inbounds": [
         {
             "listen": "127.0.0.1",
-            "port": 10082,
+            "port": 10085,
             "protocol": "dokodemo-door",
             "settings": {
                 "address": "127.0.0.1"
@@ -54,129 +16,48 @@
         },
         {
             "listen": "127.0.0.1",
-            "port": 20002,
+            "port": "20002",
             "protocol": "vless",
             "settings": {
+                "decryption": "none",
                 "clients": []
-            },
-            "sniffing": {
-                "destOverride": [
-                    "http",
-                    "tls"
-                ],
-                "enabled": true
             },
             "streamSettings": {
                 "network": "ws",
-                "security": "none",
                 "wsSettings": {
-                    "acceptProxyProtocol": true,
                     "path": "/tunnelvless"
                 }
-            },
-            "tag": "VLESS"
+            }
         },
         {
             "listen": "127.0.0.1",
-            "port": 20012,
+            "port": "20012",
             "protocol": "vless",
             "settings": {
+                "decryption": "none",
                 "clients": []
-            },
-            "sniffing": {
-                "destOverride": [
-                    "http",
-                    "tls"
-                ],
-                "enabled": true
             },
             "streamSettings": {
                 "network": "grpc",
-                "security": "none",
                 "grpcSettings": {
                     "serviceName": "tunnelvless-grpc"
                 }
-            },
-            "tag": "VLESS"
+            }
         }
     ],
-    "log": {
-        "access": "/var/log/netq/access-vless.log",
-        "error": "/var/log/netq/error-vless.log",
-        "loglevel": "warning"
-    },
     "outbounds": [
         {
-            "protocol": "freedom",
-            "settings": {}
-        },
-        {
-            "protocol": "freedom",
-            "settings": {},
-            "tag": "direct"
+            "protocol": "freedom"
         },
         {
             "protocol": "blackhole",
-            "settings": {},
             "tag": "blocked"
         }
     ],
-    "policy": {
-        "levels": {
-            "0": {
-                "connIdle": 128,
-                "handshake": 2,
-                "statsUserDownlink": true,
-                "statsUserUplink": true
-            }
-        }
-    },
     "routing": {
-        "domainStrategy": "AsIs",
         "rules": [
             {
-                "outboundTag": "blocked",
-                "protocol": [
-                    "bittorrent"
-                ],
-                "type": "field"
-            },
-            {
-                "domain": [
-                    "geosite:google",
-                    "youtube.com",
-                    "domain:googlevideo.com",
-                    "keyword:google",
-                    "ipsaya.com"
-                ],
-                "outboundTag": "direct",
-                "type": "field"
-            },
-            {
-                "ip": [
-                    "geoip:us",
-                    "geoip:ca",
-                    "geoip:cloudflare",
-                    "geoip:google"
-                ],
-                "outboundTag": "direct",
-                "type": "field"
-            },
-            {
-                "inboundTag": [
-                    "dnsIn"
-                ],
-                "outboundTag": "dnsOut",
-                "type": "field"
-            },
-            {
-                "inboundTag": [
-                    "dnsQuery"
-                ],
-                "outboundTag": "direct",
-                "type": "field"
-            },
-            {
+                "type": "field",
                 "ip": [
                     "0.0.0.0/8",
                     "10.0.0.0/8",
@@ -193,8 +74,7 @@
                     "fc00::/7",
                     "fe80::/10"
                 ],
-                "outboundTag": "blocked",
-                "type": "field"
+                "outboundTag": "blocked"
             },
             {
                 "inboundTag": [
@@ -204,52 +84,27 @@
                 "type": "field"
             },
             {
-                "ip": [
-                    "0.0.0.0/8",
-                    "10.0.0.0/8",
-                    "100.64.0.0/10",
-                    "169.254.0.0/16",
-                    "172.16.0.0/12",
-                    "192.0.0.0/24",
-                    "192.0.2.0/24",
-                    "192.168.0.0/16",
-                    "198.18.0.0/15",
-                    "198.51.100.0/24",
-                    "203.0.113.0/24",
-                    "::1/128",
-                    "fc00::/7",
-                    "fe80::/10"
-                ],
-                "outboundTag": "direct",
-                "type": "field"
-            },
-            {
-                "ip": [
-                    "223.5.5.5/32",
-                    "119.29.29.29/32",
-                    "180.76.76.76/32",
-                    "114.114.114.114/32",
-                    "geoip:cn",
-                    "geoip:jp",
-                    "geoip:in",
-                    "geoip:private"
-                ],
-                "outboundTag": "direct",
-                "type": "field"
-            },
-            {
-                "domain": [
-                    "geosite:category-ads-all"
-                ],
-                "outboundTag": "direct",
-                "type": "field"
-            },
-            {
-                "network": "tcp,udp",
-                "outboundTag": "direct",
-                "type": "field"
+                "type": "field",
+                "outboundTag": "blocked",
+                "protocol": [
+                    "bittorrent"
+                ]
             }
         ]
     },
-    "stats": {}
+    "api": {
+        "services": [
+            "LoggerService",
+            "StatsService"
+        ],
+        "tag": "api"
+    },
+    "policy": {
+        "system": {
+            "statsInboundUplink": true,
+            "statsInboundDownlink": true,
+            "statsOutboundUplink": true,
+            "statsOutboundDownlink": true
+        }
+    }
 }
