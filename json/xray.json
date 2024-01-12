@@ -27,6 +27,13 @@
                 "wsSettings": {
                     "path": "/tunnelvless"
                 }
+            },
+            "sniffing": {
+                "enabled": true,
+                "destOverride": [
+                    "http",
+                    "tls"
+                ]
             }
         },
         {
@@ -42,6 +49,62 @@
                 "grpcSettings": {
                     "serviceName": "tunnelvless-grpc"
                 }
+            },
+            "sniffing": {
+                "enabled": true,
+                "destOverride": [
+                    "http",
+                    "tls"
+                ]
+            }
+        },
+        {
+            "listen": "0.0.0.0",
+            "port": 1234,
+            "protocol": "vless",
+            "settings": {
+                "clients": []
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "security": "tls",
+                "tlsSettings": {
+                    "certificates": [
+                        {
+                            "certificateFile": "/etc/netq/netq.crt",
+                            "keyFile": "/etc/netq/netq.key"
+                        }
+                    ]
+                }
+            },
+            "sniffing": {
+                "enabled": true,
+                "destOverride": [
+                    "http",
+                    "tls"
+                ]
+            }
+        },
+        {
+            "listen": "0.0.0.0",
+            "port": 444,
+            "protocol": "vless",
+            "settings": {
+                "clients": []
+            },
+            "streamSettings": {
+                "network": "kcp",
+                "kcpSettings": {
+                    "seed": "netq"
+                }
+            },
+            "sniffing": {
+                "enabled": true,
+                "destOverride": [
+                    "http",
+                    "tls",
+                    "quic"
+                ]
             }
         }
     ],
@@ -99,12 +162,15 @@
         ],
         "tag": "api"
     },
+    "stats": {},
     "policy": {
-        "system": {
-            "statsInboundUplink": true,
-            "statsInboundDownlink": true,
-            "statsOutboundUplink": true,
-            "statsOutboundDownlink": true
+        "levels": {
+          "0": {
+            "handshake": 2,
+            "connIdle": 128,
+            "statsUserUplink": true,
+            "statsUserDownlink": true
+          }
         }
-    }
+      }
 }
